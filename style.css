@@ -1,0 +1,204 @@
+@font-face {
+  font-family: tmnt;
+  src: url(./fonts/tmnt.ttf);
+}
+@font-face {
+  font-family: tmnt2;
+  src: url(./fonts/tmnt2.ttf);
+}
+@font-face {
+  font-family: tmnt3;
+  src: url(./fonts/tmnt3.otf);
+}
+
+:root {
+  --green: #8fd129;
+  --red: #ed1c28;
+  --blue: #1f3c74;
+  --teal: #15c6a0;
+  --yellow: #ffeea6;
+  --stage-size: 1000px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: black;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+#game-shell {
+  position: relative;
+  width: var(--stage-size);
+  height: var(--stage-size);
+}
+
+#header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  background: linear-gradient(90deg, rgba(255,238,166,1) 10%, rgba(21,198,160,1) 70%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: tmnt3, fantasy;
+  font-size: 35pt;
+  z-index: 999999;
+  pointer-events: none;
+}
+
+#wait-audio {
+  padding-left: 100px;
+  font-size: 15pt;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+#logo {
+  width: 150px;
+}
+
+#backdrop {
+  position: relative;
+  overflow: hidden;
+  background-image: url(./images/background.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: var(--stage-size);
+  height: var(--stage-size);
+}
+
+#health {
+  position: absolute;
+  top: 215px;
+  left: 25px;
+  width: 300px;
+  mask-image: linear-gradient(to right, black 70%, transparent 100%);
+  z-index: 99999;
+}
+
+#bomb-desc {
+  text-align: center;
+  align-content: center;
+  background-color: var(--blue);
+  color: var(--red);
+  padding: 15px;
+  width: 200px;
+  height: 80px;
+  position: absolute;
+  top: 25px;
+  left: 400px;
+  border: 1px solid var(--red);
+  font-size: 20px;
+  z-index: 999999;
+}
+
+#bomb_ins {
+  color: white;
+}
+
+#bomb-desc::before,
+#bomb-desc::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  background: linear-gradient(
+    45deg,
+    #1F3C74,   
+    #15C6A0,   
+    #0ea5e9,   
+    #22c55e,   
+    #FFEEA6,  
+    #0f172a,   
+    #15C6A0
+  );
+  background-size: 400%;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  z-index: -1;
+  animation: animate 25s linear infinite;
+}
+
+.shadow::after {
+  filter: blur(25px);
+}
+
+@keyframes animate {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+
+#gameover,
+#win {
+  visibility: hidden;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 85%;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 99999;
+}
+
+#gameover {
+  background-image: linear-gradient(#2827276f, #4949496f), url(./images/gameover.jpg);
+}
+
+#win {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-image: linear-gradient(#28272795, #49494995), url(./images/logo.png);
+  background-size: auto;
+}
+
+#wt,
+#wb {
+  position: absolute;
+  x:200;
+  padding: 100px 0;
+  margin: 0;
+  background: linear-gradient(90deg, rgba(255,238,166,1) 10%, rgba(21,198,160,1) 70%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: tmnt3, fantasy;
+  font-size: 30pt;
+  -webkit-text-stroke: 1px black;
+  z-index: 999999;
+}
+
+.token,
+.projectile,
+.bomb {
+  position: absolute;
+  z-index: 99;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.projectile {
+  z-index: 120;
+}
+
+#knife {
+  z-index: 121;
+}
+
+.starRight,
+.starLeft {
+  position: absolute;
+}

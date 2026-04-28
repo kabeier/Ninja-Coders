@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>It's Codin' Time</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+  <script src="https://kit.fontawesome.com/d85ece68f7.js" crossorigin="anonymous"></script>
+  <script src="./js/main.js" defer></script>
+</head>
+<body>
+  <div id="game-shell">
+    <img src="./images/health-min.png" id="health" alt="Health bar" />
+
+    <h1 id="header">
+      <img src="./images/logo.png" id="logo" alt="Logo" />
+      It's Codin' Time
+      <i id="wait-audio" class="fa-solid fa-volume-xmark" aria-label="Toggle audio"></i>
+    </h1>
+
+    <div id="backdrop" aria-label="Console game stage"></div>
+  </div>
+
+  <div id="gameover"></div>
+
+  <div id="win">
+    <div><h1 id="wt">Congrats!!!</h1></div>
+    <div><h1 id="wb">You Win!</h1></div>
+  </div>
+</body>
+</html>
