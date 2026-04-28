@@ -162,7 +162,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 60px 0;
+  padding: 260px 0;
   opacity: 100%;
   background-image: linear-gradient(#28272795, #49494995);
   width: var(--stage-size);
