@@ -167,9 +167,9 @@ body {
   opacity: 100%;
   background-image: linear-gradient(#28272795, #49494995);
   width: var(--stage-size);
-  height: calc(var(--stage-size) - var(--win-offset-top));
+  height: var(--stage-size);
   position: absolute;
-  top: var(--win-offset-top);
+  top: 0;
   left: 0;
 }
 
