@@ -78,6 +78,14 @@ const stage = () => $('#backdrop');
 const randInt = (min, max) => Math.floor(Math.random() * (max - min) + min);
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
+let yoshi;
+let danny;
+let shredder;
+let rocksteady;
+let bebop;
+let foot;
+let clan;
+
 const sounds = Object.fromEntries(
   Object.entries(ASSETS.audio).map(([name, src]) => [name, new Audio(src)]),
 );
@@ -298,7 +306,7 @@ class Token extends GameObject {
     stage().appendChild(star.node);
 
     const intervalId = setInterval(() => {
-      const hero =  yoshi;
+      const hero = yoshi;
       const heroIsValidTarget = hero?.alive && hero?.node?.isConnected;
       const heroIsOnLeft = heroIsValidTarget && hero.x < this.x;
 
@@ -342,7 +350,7 @@ class Hero extends Token {
   constructor() {
     if (document.getElementById('hero')) {
       logHint('You already have a Hero. Use reset() if you want to start over.');
-      return  yoshi;
+      return yoshi;
     }
     safePlay(sounds.hero);
     super({ slot: HERO_SLOT, baseImg: ASSETS.images.heroStand, top: CONFIG.token.heroTop, isHero: true });
@@ -505,7 +513,7 @@ class Bomb extends GameObject {
 
   fall() {
     this.intervalId = setInterval(() => {
-      const hero =  yoshi;
+      const hero = yoshi;
       const heroLeft = hero ? hero.x + 100 : null;
       const heroRight = hero ? hero.x + 200 : null;
       const hitHero = hero && this.x >= heroLeft && this.x <= heroRight && this.y >= 500;
@@ -576,22 +584,26 @@ function reset(stopMusic = true) {
   healthBar.reset();
   Footman.resetSlots();
   Token.all = [];
-  ['danny', 'shredder', 'bebop', 'rocksteady', 'yoshi', 'foot', 'clan'].forEach((name) => {
-    try { delete window[name]; } catch { window[name] = undefined; }
-  });
+  yoshi = undefined;
+  danny = undefined;
+  shredder = undefined;
+  rocksteady = undefined;
+  bebop = undefined;
+  foot = undefined;
+  clan = undefined;
   $('#gameover').style.visibility = 'hidden';
   $('#win').style.visibility = 'hidden';
 }
 
 function createClan() {
   Footman.resetSlots();
-  const clan = [new Footman(), new Footman(), new Footman(), new Footman()].filter(Boolean);
-   danny = clan[0];
-   shredder = clan[1];
-   rocksteady = clan[2];
-   bebop = clan[3];
-   clan = clan;
-  return clan;
+  const generatedClan = [new Footman(), new Footman(), new Footman(), new Footman()].filter(Boolean);
+  danny = generatedClan[0];
+  shredder = generatedClan[1];
+  rocksteady = generatedClan[2];
+  bebop = generatedClan[3];
+  clan = generatedClan;
+  return generatedClan;
 }
 
 function gameInfo() {
@@ -619,7 +631,7 @@ function runLevel({ music, intervalMs, smart = false, raid = false }) {
   safePlay(music);
   gameInfo();
   const clan = createClan();
-   yoshi = new Hero();
+  yoshi = new Hero();
   if (raid) Bomb.startRaid();
 
   levelIntervalId = setInterval(() => {
@@ -642,8 +654,8 @@ function runLevel({ music, intervalMs, smart = false, raid = false }) {
     const enemy = living[randInt(0, living.length)];
     if (!enemy || enemy.isRunning) return;
 
-    if (smart &&  yoshi?.node?.isConnected) {
-      if (enemy.x <  yoshi.x) {
+    if (smart && yoshi?.node?.isConnected) {
+      if (enemy.x < yoshi.x) {
         Math.random() > 0.5 ? enemy.throwStarRight() : enemy.walkRight(4);
       } else {
         Math.random() > 0.5 ? enemy.throwStarLeft() : enemy.walkLeft(4);
@@ -671,7 +683,7 @@ function help() {
   logText('Start the guided tutorial with:');
   logCode('tutorial()');
   logText('Or create a hero yourself with:');
-  logCode(' yoshi = new Hero()');
+  logCode('yoshi = new Hero()');
   logHint('Use actions() any time to see the command list. Use reset() to start over.');
 }
 
@@ -679,7 +691,7 @@ function actions() {
   console.clear();
   logTitle('Console Commands');
   logText('Create objects / instances:');
-  logCode(' yoshi = new Hero()\n danny = new Footman()');
+  logCode('yoshi = new Hero()\ndanny = new Footman()');
 
   logText('\nChange attributes directly:');
   logCode('yoshi.hue = 222\nyoshi.x = 300\nyoshi.name = "Code Ninja"');
@@ -721,9 +733,9 @@ function tutorialCreateHero() {
   logTitle('Step 1: Create an object');
   logText('A class is the blueprint. An object is one actual thing made from that blueprint.');
   logText('Make one Hero object and save it in a variable named yoshi:');
-  logCode(' yoshi = new Hero()');
+  logCode('yoshi = new Hero()');
   logHint('The word new means: build a fresh Hero instance from the Hero class.');
-  waitForTutorial(() =>  yoshi instanceof Hero, tutorialChangeAttribute);
+  waitForTutorial(() => yoshi instanceof Hero, tutorialChangeAttribute);
 }
 
 function tutorialChangeAttribute() {
@@ -733,7 +745,7 @@ function tutorialChangeAttribute() {
   logText('Try changing your hero color by setting the hue attribute:');
   logCode('yoshi.hue = 222');
   logHint('Behind the scenes, a setter updates the image filter. For students: it feels like changing normal object data.');
-  waitForTutorial(() =>  yoshi?.hue === 222, tutorialMoveRight);
+  waitForTutorial(() => yoshi?.hue === 222, tutorialMoveRight);
 }
 
 function tutorialMoveRight() {
@@ -742,7 +754,7 @@ function tutorialMoveRight() {
   logText('Methods are actions an object knows how to do.');
   logText('Tell your hero to walk right:');
   logCode('yoshi.walkRight()');
-  waitForTutorial(() =>  yoshi?.node?.dataset.tutorialwalkRight === 'done', tutorialMoveFar);
+  waitForTutorial(() => yoshi?.node?.dataset.tutorialwalkRight === 'done', tutorialMoveFar);
 }
 
 function tutorialMoveFar() {
@@ -751,16 +763,16 @@ function tutorialMoveFar() {
   logText('Arguments are extra information we give to a method.');
   logText('Walk left 3 steps instead of the default 1 step:');
   logCode('yoshi.walkLeft(3)');
-  waitForTutorial(() =>  yoshi?.node?.dataset.tutorialwalkFar === 'done', tutorialSpawnEnemy);
+  waitForTutorial(() => yoshi?.node?.dataset.tutorialwalkFar === 'done', tutorialSpawnEnemy);
 }
 
 function tutorialSpawnEnemy() {
   console.clear();
   logTitle('Step 5: Make another object');
   logText('Now create a Footman enemy and save it as danny:');
-  logCode(' danny = new Footman()');
+  logCode('danny = new Footman()');
   logHint('Same idea: class blueprint → object instance.');
-  waitForTutorial(() =>  danny instanceof Footman, tutorialBlock);
+  waitForTutorial(() => danny instanceof Footman, tutorialBlock);
 }
 
 function tutorialBlock() {
@@ -770,9 +782,9 @@ function tutorialBlock() {
   logText('If the projectile comes from the right side, block right:');
   logCode('yoshi.blockRight()');
 
-  const starInterval = setInterval(() =>  danny?.throwStarLeft(), 900);
+  const starInterval = setInterval(() => danny?.throwStarLeft(), 900);
   waitForTutorial(
-    () =>  yoshi?.node?.dataset.tutorialblock === 'done',
+    () => yoshi?.node?.dataset.tutorialblock === 'done',
     () => {
       clearInterval(starInterval);
       tutorialAttack();
@@ -785,7 +797,7 @@ function tutorialAttack() {
   logTitle('Step 7: Use one object as an argument');
   logText('The attack method needs to know who to attack. Pass the enemy object into the method:');
   logCode('yoshi.attack(danny)');
-  waitForTutorial(() => ! danny?.node?.isConnected, tutorialBomb);
+  waitForTutorial(() => !danny?.node?.isConnected, tutorialBomb);
 }
 
 function tutorialBomb() {
@@ -794,9 +806,9 @@ function tutorialBomb() {
   logText('A bomb will show a command. Run that command before it lands.');
   logText('Use actions() if you forget the options.');
   logCode('actions()');
-   foot = new Footman();
+  foot = new Footman();
   Bomb.startRaid(3000);
-  waitForTutorial(() =>  yoshi?.node?.dataset.tutorialbomb === 'done', tutorialFinish);
+  waitForTutorial(() => yoshi?.node?.dataset.tutorialbomb === 'done', tutorialFinish);
 }
 
 function tutorialFinish() {
@@ -812,7 +824,7 @@ function tutorialFinish() {
 
 function startRaid(ms = 3000) { Bomb.startRaid(ms); }
 function stopRaid() { Bomb.stopRaid(); }
-function refresh() {  location.reload(); }
+function refresh() { location.reload(); }
 
 Object.assign(window, {
   Hero,
