@@ -161,15 +161,20 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-image: linear-gradient(#28272795, #49494995), url(./images/logo.png);
-  background-size: auto;
+  align-items: center;
+  padding: 60px 0;
+  opacity: 100%;
+  background-image: linear-gradient(#28272795, #49494995);
+  width: var(--stage-size);
+  height: var(--stage-size);
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 #wt,
 #wb {
-  position: absolute;
-  x:200;
-  padding: 100px 0;
+  padding: 0;
   margin: 0;
   background: linear-gradient(90deg, rgba(255,238,166,1) 10%, rgba(21,198,160,1) 70%);
   background-clip: text;
@@ -178,7 +183,11 @@ body {
   font-family: tmnt3, fantasy;
   font-size: 30pt;
   -webkit-text-stroke: 1px black;
-  z-index: 999999;
+}
+
+#win-logo {
+  width: 300px;
+  height: auto;
 }
 
 .token,
